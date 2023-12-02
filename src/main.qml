@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtDataVisualization
 
 ApplicationWindow {
     id: root
@@ -25,4 +26,6 @@ ApplicationWindow {
         }
     }
 
+    WordsGraph{
+    }
 }

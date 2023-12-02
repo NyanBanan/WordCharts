@@ -16,9 +16,12 @@ qt_add_qml_module(WordCharts
         URI WordChartsQml
         QML_FILES
             src/main.qml
+            src/WordsGraph.qml
         SOURCES
             src/FileWordStream.cpp
-)
+            src/BarChartModel.cpp
+            src/WordData.cpp
+        )
 
 target_link_libraries(WordCharts PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::Qml)
 target_include_directories(WordCharts PUBLIC src)
