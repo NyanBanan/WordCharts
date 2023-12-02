@@ -5,19 +5,20 @@
 
 
 int main(int argc, char *argv[]) {
-    QDir file_path{"../TestText.txt"};
-    QFile data(file_path.absolutePath());
-    if (data.open(QFile::ReadOnly)) {
-        FileWordStream fws(&data);
-        QByteArray test;
-        do {
-            fws.pushNextWord(test);
-            qDebug() << QString(test);
-            qDebug() << fws.getProgress();
-        } while (test != "");
-    } else {
-        qDebug() << "open error";
-    }
+//    QDir file_path{"../TestText.txt"};
+//    QFile data(file_path.absolutePath());
+//    if (data.open(QFile::ReadOnly)) {
+//        FileWordStream fws;
+//        fws.setDevice(&data);
+//        QByteArray test;
+//        do {
+//            fws.pushNextWord(test);
+//            qDebug() << QString(test);
+//            qDebug() << fws.getProgress();
+//        } while (test != "");
+//    } else {
+//        qDebug() << "open error";
+//    }
 
     QApplication app(argc, argv);
 

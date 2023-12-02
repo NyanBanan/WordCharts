@@ -18,8 +18,7 @@ public:
 private:
     QString _word;
     QString _doc;
-
-    qint64 _hash;
+    QAtomicInteger<quint64> _count{0};
 };
 
 

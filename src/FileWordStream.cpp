@@ -4,8 +4,8 @@
 
 #include "FileWordStream.hpp"
 
-FileWordStream::FileWordStream(QFile *stream) {
-    _text_stream.setDevice(stream);
+void FileWordStream::setDevice(QIODevice *device) {
+    _text_stream.setDevice(device);
     _bytes_size = _text_stream.device()->bytesAvailable();
 }
 
@@ -21,10 +21,13 @@ void FileWordStream::pushNextWord(QByteArray &to) {
     increaseProgress(to.size());
 }
 
-double FileWordStream::getProgress() const {
+double FileWordStream::getProgress() {
+    QMutexLocker locker(&_progress_mutex);
     return _progress;
 }
 
 void FileWordStream::increaseProgress(qint64 bytes_read) {
-    _progress += (double) (bytes_read + 1) / (double) _bytes_size;  // +1 to take into account the standard delimiter ' '
+    QMutexLocker locker(&_progress_mutex);
+    _progress +=
+            (qreal) (bytes_read + 1) / (qreal) _bytes_size;  // +1 to take into account the standard delimiter ' '
 }

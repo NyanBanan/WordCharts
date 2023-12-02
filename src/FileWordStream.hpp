@@ -13,20 +13,21 @@
 //I think this is not critical because visualization of processing progress in this task may contain some error
 class FileWordStream : public WordStream {
 public:
-    explicit FileWordStream(QFile *stream);
+    void setDevice(QIODevice *device);
 
     QByteArray getNextWord() override;
 
     void pushNextWord(QByteArray &to) override;
 
-    [[nodiscard]] double getProgress() const;
+    [[nodiscard]] double getProgress();
 
 private:
     void increaseProgress(qint64 bytes_read);
 
     QTextStream _text_stream;
-    double _progress{0.0};
+    qreal _progress{0.0};
     qint64 _bytes_size;
+    QMutex _progress_mutex;
 };
 
 
