@@ -17,13 +17,6 @@ ApplicationWindow {
         root.height = Screen.desktopAvailableWidth / 4
         root.x = Screen.desktopAvailableWidth / 2 - width / 2
         root.y = Screen.desktopAvailableHeight / 2 - height / 2
-
-        // graph.width = Qt.binding(function () {
-        //     return root.width
-        // })
-        // graph.height = Qt.binding(function () {
-        //     return root.height
-        // })
     }
 
     background: Rectangle {
@@ -36,63 +29,69 @@ ApplicationWindow {
             }
         }
     }
-    GridLayout {
+    ColumnLayout {
         anchors.fill: parent
-        columns: 2
-        rows: 2
-        flow: width > height ? GridLayout.LeftToRight : GridLayout.TopToBottom
         WordsGraph {
             id: graph
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 500
             Layout.row: 0
-            Layout.column: 0
             model: barModel
         }
-        ColumnLayout {
-            Layout.row: 0
-            Layout.column: 1
-            Button {
-                id: start
-                Layout.preferredWidth: 100
-                Layout.preferredHeight: 100
-                onClicked: {
-                    wordParser.startParseDocument(fileDialog.currentFile)
-                }
-                Text {
-                    text: "Start"
-                    width: parent.width
-                    height: parent.height
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-            Button {
-                id: open
-                Layout.preferredWidth: 100
-                Layout.preferredHeight: 100
-                onClicked: {
-                    fileDialog.open()
-                }
-                Text {
-                    text: "Open"
-                    width: parent.width
-                    height: parent.height
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-        }
-
-        ProgressBar {
-            id: progress
+        RowLayout {
             Layout.row: 1
-            Layout.column: 0
-            Layout.fillWidth: true
-            Layout.preferredHeight: 100
-            Layout.margins: 5
+            ColumnLayout {
+                Button {
+                    id: start
+                    Layout.preferredWidth: 100
+                    Layout.preferredHeight: 40
+                    onClicked: {
+                        wordParser.startParseDocument(filePath.text)
+                    }
+                    Text {
+                        text: "Start"
+                        width: parent.width
+                        height: parent.height
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+                Button {
+                    id: open
+                    Layout.preferredWidth: 100
+                    Layout.preferredHeight: 40
+                    onClicked: {
+                        fileDialog.open()
+                    }
+                    Text {
+                        text: "Open"
+                        width: parent.width
+                        height: parent.height
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+            }
+            ColumnLayout {
+                ProgressBar {
+                    id: progress
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 30
+                    Layout.margins: 5
+                }
+                TextField {
+                    id: filePath
+                    placeholderText: qsTr("Enter path")
+                    text: fileDialog.currentFile
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 50
+                    Layout.margins: 5
+                    background: Rectangle {
+                        color: "#ffffff"
+                        border.color: filePath.enabled ? "#21be2b" : "transparent"
+                    }
+                }
+            }
         }
     }
     FileDialog {
@@ -102,18 +101,20 @@ ApplicationWindow {
 
     WordFileCountModel {
         id: barModel
+        Component.onCompleted: {
+            progress.value = barModel.progress
+        }
     }
 
     FileWordParser {
         id: wordParser
         model: barModel
-        Component.onCompleted :{
-            progress.value = Qt.binding(function (){return barModel.progress})
-        }
+
     }
 
     Connections {
         target: wordParser
+
         function onErrorOccured(errorMessage) {
             console.log(errorMessage)
             messageText.text = errorMessage

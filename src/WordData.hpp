@@ -8,17 +8,16 @@
 
 #include <QString>
 
-class WordData {
-public:
-    WordData(QString word, QString doc);
+struct WordData {
 
-    [[nodiscard]] const QString &getWord() const;
+    WordData(QString word, QString doc, quint64 count = 1);
 
-    [[nodiscard]] const QString &getDoc() const;
-private:
+    bool operator ==(const WordData& right) const;
+    bool operator < (const WordData& right) const;
+
     QString _word;
-    QString _doc;
-    QAtomicInteger<quint64> _count{0};
+    QString _file;
+    quint64 _count;
 };
 
 

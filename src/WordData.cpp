@@ -6,12 +6,13 @@
 
 #include <utility>
 
-WordData::WordData(QString word, QString doc) : _word(std::move(word)), _doc(std::move(doc)) {}
+WordData::WordData(QString word, QString doc, quint64 count) : _word(std::move(word)), _file(std::move(doc)),
+                                                               _count(count) {}
 
-const QString &WordData::getWord() const {
-    return _word;
+bool WordData::operator==(const WordData &right) const {
+    return _word == right._word && _file == right._file;
 }
 
-const QString &WordData::getDoc() const {
-    return _doc;
+bool WordData::operator<(const WordData &right) const {
+    return _count < right._count;
 }

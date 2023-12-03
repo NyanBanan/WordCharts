@@ -2,9 +2,15 @@
 #include <QQmlApplicationEngine>
 
 #include "FileWordStream.hpp"
+#include "Trees/ModifiedPrefixTree.hpp"
 
 
 int main(int argc, char *argv[]) {
+//    ModifiedPrefixTree tree;
+//    tree.insert("Aboba");
+//    tree.insert("Abo");
+//    tree.insert("Abobabus");
+
 //    QDir file_path{"../TestText.txt"};
 //    QFile data(file_path.absolutePath());
 //    if (data.open(QFile::ReadOnly)) {

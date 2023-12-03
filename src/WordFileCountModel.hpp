@@ -9,6 +9,7 @@
 #include <QtQml>
 
 #include "WordData.hpp"
+#include "util/NumOfWordsConstant.hpp"
 
 class WordFileCountModel : public QAbstractItemModel {
     Q_OBJECT
@@ -22,11 +23,11 @@ public:
 
     WordFileCountModel();
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] int columnCount(const QModelIndex &parent) const override;
 
-    QModelIndex parent(const QModelIndex &child) const override;
+    [[nodiscard]] QModelIndex parent(const QModelIndex &child) const override;
 
     [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
 
@@ -34,15 +35,22 @@ public:
 
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+//    Qt::ItemFlags flags(const QModelIndex &index) const override;
+//
+//    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+
     void pushBack(const QString& word, const QString& doc, quint64 count);
+
+    void changeData(WordFileCountModel::Roles role, qsizetype index, const QVariant &value);
+
+    void changeData(const WordData &data, const WordData &new_data);
+
+    qsizetype getIndexOf(const QString &word, const QString &file);
 
 private:
     [[nodiscard]] bool hasIndex(int row, int column) const;
 
-//    QMap<WordData, quint64> _data;
-    QVector<QString> _words_data;
-    QVector<QString> _file_data;
-    QVector<quint64> _count_data;
+    QList<WordData> _words_data;
 };
 
 
