@@ -6,21 +6,11 @@
 
 WordFileCountModel::WordFileCountModel() {
     _words_data.reserve(util::MAX_WORDS);
-    _words_data.reserve(util::MAX_WORDS);
-    _words_data.reserve(util::MAX_WORDS);
-//
-//    pushBack("Aboba", "Abobus.txt", 50);
-//    pushBack("Aboba2", "Abobus.txt", 25);
-//    pushBack("Aboba3", "Abobus.txt", 100);
-//    pushBack("Aboba4", "Abobus2.txt", 50);
-//    pushBack("Aboba5", "Abobus2.txt", 25);
-//    pushBack("Aboba3", "Abobus2.txt", 90);
 }
 
 int WordFileCountModel::rowCount(const QModelIndex &parent) const {
     if (parent.isValid())
         return 0;
-
     return (int) _words_data.size();
 }
 
@@ -95,35 +85,23 @@ bool WordFileCountModel::hasIndex(int row, int column) const {
     return true;
 }
 
-void WordFileCountModel::changeData(WordFileCountModel::Roles role, qsizetype index, const QVariant &value) {
-    switch (role) {
-        case WordRole: {
-            _words_data[index]._word = value.toString();
-            break;
-        }
-        case FileRole: {
-            _words_data[index]._file = value.toString();
-            break;
-        }
-        case CountRole: {
-            _words_data[index]._count = value.toInt();
-            break;
-        }
-        default:
-            return;
-    }
-}
-
 qsizetype WordFileCountModel::getIndexOf(const QString &word, const QString &file) {
     return _words_data.indexOf({word, file});
 }
 
 void WordFileCountModel::changeData(const WordData &data, const WordData &new_data) {
     auto ind = _words_data.indexOf(data);
-    if(ind != -1){
+    if (ind != -1) {
         _words_data[ind] = new_data;
     }
-    dataChanged(createIndex(ind, 0), createIndex(ind,0));
+    dataChanged(createIndex(ind, 0), createIndex(ind, 0));
+}
+
+void WordFileCountModel::resetData() {
+    beginResetModel();
+    _words_data.clear();
+    _words_data.reserve(util::MAX_WORDS);
+    endResetModel();
 }
 //
 //Qt::ItemFlags WordFileCountModel::flags(const QModelIndex &index) const {

@@ -2,13 +2,13 @@
 // Created by nyanbanan on 03.12.23.
 //
 
-#include "FrequentWords.hpp"
+#include "WordsFrequentProxy.hpp"
 
-FrequentWords::FrequentWords(qint64 max_amount) : _max_amount(max_amount) {
+WordsFrequentProxy::WordsFrequentProxy(qint64 max_amount) : _max_amount(max_amount) {
     _words_for_model.reserve(_max_amount);
 }
 
-void FrequentWords::updateData(const QString &word, const QString &file, quint64 count) {
+void WordsFrequentProxy::updateData(const QString &word, const QString &file, quint64 count) {
     if (_words_for_model.size() != _max_amount) {
         _words_for_model.emplaceBack(word, file, count);
         _model->pushBack(word, file, count);
@@ -30,10 +30,10 @@ void FrequentWords::updateData(const QString &word, const QString &file, quint64
     }
 }
 
-void FrequentWords::setModel(WordFileCountModel *model) {
+void WordsFrequentProxy::setModel(WordFileCountModel *model) {
     _model = model;
 }
 
-WordFileCountModel *FrequentWords::getModel() const {
+WordFileCountModel *WordsFrequentProxy::getModel() const {
     return _model;
 }

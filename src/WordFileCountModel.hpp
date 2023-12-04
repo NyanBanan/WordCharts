@@ -35,18 +35,14 @@ public:
 
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-//    Qt::ItemFlags flags(const QModelIndex &index) const override;
-//
-//    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-
     void pushBack(const QString& word, const QString& doc, quint64 count);
-
-    void changeData(WordFileCountModel::Roles role, qsizetype index, const QVariant &value);
 
     void changeData(const WordData &data, const WordData &new_data);
 
     qsizetype getIndexOf(const QString &word, const QString &file);
 
+    Q_INVOKABLE
+    void resetData();
 private:
     [[nodiscard]] bool hasIndex(int row, int column) const;
 

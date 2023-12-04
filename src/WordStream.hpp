@@ -8,9 +8,8 @@
 #include <QtQml>
 #include <QString>
 
+//Класс представляет интерфейс для получения данных по 1 слову
 class WordStream {
-//    QML_UNCREATABLE("This is interface type")
-//    Q_INVOKABLE
     virtual QByteArray getNextWord() = 0;
     virtual void pushNextWord(QByteArray &to) = 0;
 };

@@ -9,8 +9,7 @@
 
 #include "WordStream.hpp"
 
-//This realization might calculate progress value untruly if target file contains a lot whitespaces
-//I think this is not critical because visualization of processing progress in this task may contain some error
+//Данная реализация позволяет выполнять обработку IODevice по словам при помощи QTextStream
 class FileWordStream : public WordStream {
 public:
     void setDevice(QIODevice *device);
@@ -18,16 +17,8 @@ public:
     QByteArray getNextWord() override;
 
     void pushNextWord(QByteArray &to) override;
-
-    [[nodiscard]] double getProgress();
-
 private:
-    void increaseProgress(qint64 bytes_read);
-
     QTextStream _text_stream;
-    qreal _progress{0.0};
-    qint64 _bytes_size;
-    QMutex _progress_mutex;
 };
 
 

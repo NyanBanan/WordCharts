@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
 //    tree.insert("Aboba");
 //    tree.insert("Abo");
 //    tree.insert("Abobabus");
+//    tree.insert("bo");
 
 //    QDir file_path{"../TestText.txt"};
 //    QFile data(file_path.absolutePath());
