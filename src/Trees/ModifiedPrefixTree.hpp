@@ -28,6 +28,7 @@ public:
     ModifiedPrefixTree() = default;
 
     Node* insert(const QString &word);
+    void insertSubWord(const QString& sub_word);
 
     signals:
     void countChanged(QString word, qint64 count);
