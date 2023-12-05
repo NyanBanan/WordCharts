@@ -18,10 +18,11 @@ qt_add_qml_module(WordCharts
             src/main.qml
             src/WordsGraph.qml
         SOURCES
+            src/WordFrequencyAnalystThread.cpp
             src/WordsFrequentProxy.cpp
             src/FileWordStream.cpp
             src/WordFileCountModel.cpp
-            src/FileWordParser.cpp
+            src/WordFrequencyAnalyst.cpp
             src/WordData.cpp
             src/Trees/ModifiedPrefixTree.cpp
 )

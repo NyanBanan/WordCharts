@@ -8,21 +8,20 @@ WordsFrequentProxy::WordsFrequentProxy(qint64 max_amount) : _max_amount(max_amou
     _words_for_model.reserve(_max_amount);
 }
 
-void WordsFrequentProxy::updateData(const QString &word, const QString &file, quint64 count) {
+void WordsFrequentProxy::updateData(const WordData &wd) {
     if (_words_for_model.size() != _max_amount) {
-        _words_for_model.emplaceBack(word, file, count);
-        _model->pushBack(word, file, count);
+        _words_for_model.emplaceBack(wd);
+        emit newData(wd);
         if (_words_for_model.size() == _max_amount - 1) {
             _min_elem = std::min_element(_words_for_model.begin(), _words_for_model.end());
         }
     } else {
-        WordData wd{word, file, count};
         auto iter = std::find(_words_for_model.begin(), _words_for_model.end(), wd);
         if (iter != _words_for_model.end()) {
             iter->_count = wd._count;
-            _model->changeData(wd, wd);
+            emit updateModelData(wd, wd);
         } else if (_min_elem->_count < wd._count) {
-            _model->changeData(*_min_elem, wd);
+            emit updateModelData(*_min_elem, wd);
             _min_elem->_word = wd._word;
             _min_elem->_count = wd._count;
             _min_elem = std::min_element(_words_for_model.begin(), _words_for_model.end());
@@ -30,10 +29,3 @@ void WordsFrequentProxy::updateData(const QString &word, const QString &file, qu
     }
 }
 
-void WordsFrequentProxy::setModel(WordFileCountModel *model) {
-    _model = model;
-}
-
-WordFileCountModel *WordsFrequentProxy::getModel() const {
-    return _model;
-}

@@ -31,7 +31,7 @@ ApplicationWindow {
     }
 
     Connections {
-        target: wordParser
+        target: wordFrequencyAnalyst
 
         function onErrorOccured(errorMessage) {
             console.log(errorMessage)
@@ -42,17 +42,17 @@ ApplicationWindow {
         function onStateChanged(state){
             console.log(state)
             switch (state){
-                case FileWordParser.WORK:{
+                case WordFrequencyAnalyst.WORK:{
                     console.log(state)
                     grid.state = "WORKING"
                     break;
                 }
-                case FileWordParser.PAUSE:{
+                case WordFrequencyAnalyst.PAUSE:{
                     console.log(state)
                     grid.state = "PAUSED"
                     break;
                 }
-                case FileWordParser.STOP:{
+                case WordFrequencyAnalyst.STOP:{
                     console.log(state)
                     grid.state = "STOPPED"
                     break;
@@ -61,12 +61,12 @@ ApplicationWindow {
         }
     }
 
-    FileWordParser {
-        id: wordParser
+    WordFrequencyAnalyst {
+        id: wordFrequencyAnalyst
         model: barModel
         Component.onCompleted: {
             progress.value = Qt.binding(function () {
-                return wordParser.progress
+                return wordFrequencyAnalyst.progress
             })
         }
     }
@@ -90,7 +90,7 @@ ApplicationWindow {
                 State {
                     name: "STOPPED"
                     PropertyChanges { target: upperButtonText; text: "Начать"}
-                    PropertyChanges { target: upperButton; onClicked: { wordParser.startParseDocument(filePath.text) }}
+                    PropertyChanges { target: upperButton; onClicked: { wordFrequencyAnalyst.startParseDocument(filePath.text) }}
 
                     PropertyChanges { target: lowerButtonText; text: "Открыть"}
                     PropertyChanges { target: lowerButton; onClicked: { fileDialog.open() }}
@@ -98,18 +98,17 @@ ApplicationWindow {
                 State {
                     name: "WORKING"
                     PropertyChanges { target: upperButtonText; text: "Пауза"}
-                    PropertyChanges { target: upperButton; onClicked: { wordParser.state = FileWordParser.PAUSE }}
+                    PropertyChanges { target: upperButton; onClicked: { wordFrequencyAnalyst.state = WordFrequencyAnalyst.PAUSE }}
 
-                    PropertyChanges { target: lowerButtonText; text: "Отмена"}
-                    PropertyChanges { target: lowerButton; onClicked: { wordParser.state = FileWordParser.STOP; barModel.resetData() }}
+                    PropertyChanges { target: lowerButton; visible: false}
                 },
                 State {
                     name: "PAUSED"
                     PropertyChanges { target: upperButtonText; text: "Продолжить"}
-                    PropertyChanges { target: upperButton; onClicked: { wordParser.state = FileWordParser.WORK }}
+                    PropertyChanges { target: upperButton; onClicked: { wordFrequencyAnalyst.state = WordFrequencyAnalyst.WORK }}
 
                     PropertyChanges { target: lowerButtonText; text: "Отмена"}
-                    PropertyChanges { target: lowerButton; onClicked: { wordParser.state = FileWordParser.STOP; barModel.resetData()}}
+                    PropertyChanges { target: lowerButton; onClicked: { wordFrequencyAnalyst.state = WordFrequencyAnalyst.STOP; barModel.resetData() }}
                 }
             ]
 

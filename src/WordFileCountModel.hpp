@@ -35,9 +35,9 @@ public:
 
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-    void pushBack(const QString& word, const QString& doc, quint64 count);
+    void pushFront(const WordData &wd);
 
-    void changeData(const WordData &data, const WordData &new_data);
+    void updateData(const WordData &old_data, const WordData &new_data);
 
     qsizetype getIndexOf(const QString &word, const QString &file);
 

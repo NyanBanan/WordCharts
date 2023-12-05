@@ -6,11 +6,11 @@
 
 
 int main(int argc, char *argv[]) {
-//    ModifiedPrefixTree tree;
-//    tree.insert("Aboba");
-//    tree.insert("Abo");
-//    tree.insert("Abobabus");
-//    tree.insert("bo");
+//    ModifiedPrefixTree _tree;
+//    _tree.insert("Aboba");
+//    _tree.insert("Abo");
+//    _tree.insert("Abobabus");
+//    _tree.insert("bo");
 
 //    QDir file_path{"../TestText.txt"};
 //    QFile data(file_path.absolutePath());

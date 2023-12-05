@@ -47,10 +47,10 @@ QHash<int, QByteArray> WordFileCountModel::roleNames() const {
     return roles;
 }
 
-void WordFileCountModel::pushBack(const QString &word, const QString &doc, quint64 count) {
+void WordFileCountModel::pushFront(const WordData &wd) {
     beginInsertRows(QModelIndex{}, (int) _words_data.count(), (int) _words_data.count());
 
-    _words_data.push_back({word, doc, count});
+    _words_data.push_front(wd);
 
     endInsertRows();
 }
@@ -89,8 +89,8 @@ qsizetype WordFileCountModel::getIndexOf(const QString &word, const QString &fil
     return _words_data.indexOf({word, file});
 }
 
-void WordFileCountModel::changeData(const WordData &data, const WordData &new_data) {
-    auto ind = _words_data.indexOf(data);
+void WordFileCountModel::updateData(const WordData &old_data, const WordData &new_data) {
+    auto ind = _words_data.indexOf(old_data);
     if (ind != -1) {
         _words_data[ind] = new_data;
     }
