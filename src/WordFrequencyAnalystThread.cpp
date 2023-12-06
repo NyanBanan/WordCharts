@@ -43,7 +43,7 @@ void WordFrequencyAnalystThread::run() {
         while (dirty_word != "") {
             QString word{dirty_word};
             word = word.toLower().replace(QRegularExpression(R"([.,"'()\[\]])"), "");
-            _tree.insert(word);
+            _tree.handelWord(word);
 
             increaseProgress(dirty_word.size());
 

@@ -8,6 +8,9 @@
 #include <QString>
 #include <QMap>
 #include <QObject>
+#include <climits>
+#include <QHash>
+#include "../WordsCounter.hpp"
 
 struct Node {
     Node();
@@ -25,17 +28,19 @@ class ModifiedPrefixTree : public QObject{
 Q_OBJECT
 
 public:
-    ModifiedPrefixTree() = default;
+    ModifiedPrefixTree();
 
-    Node* insert(const QString &word);
-    void insertSubWord(const QString& sub_word);
+    Node* handelWord(const QString &word);
+    void handleSubWord(const QString& sub_word);
 
     signals:
-    void countChanged(QString word, qint64 count);
+    void countChanged(QString word, quint64 count);
 private:
     Node root{};
     qint64 _min_count{0};
+    WordsCounter _counter;
 };
+
 
 
 #endif //WORDCHARTS_MODIFIEDPREFIXTREE_HPP

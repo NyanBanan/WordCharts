@@ -7,7 +7,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Quick Qml Concurrent)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Quick Qml)
 
 qt_add_executable(WordCharts src/main.cpp)
 
@@ -18,14 +18,16 @@ qt_add_qml_module(WordCharts
             src/main.qml
             src/WordsGraph.qml
         SOURCES
+            src/CountGraph.cpp
+            src/FileWordStream.cpp
+            src/WordsCounter.cpp
             src/WordFrequencyAnalystThread.cpp
             src/WordsFrequentProxy.cpp
-            src/FileWordStream.cpp
             src/WordFileCountModel.cpp
             src/WordFrequencyAnalyst.cpp
             src/WordData.cpp
             src/Trees/ModifiedPrefixTree.cpp
 )
 
-target_link_libraries(WordCharts PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::Qml Qt6::Concurrent)
+target_link_libraries(WordCharts PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::Qml)
 target_include_directories(WordCharts PUBLIC src)

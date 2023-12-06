@@ -6,7 +6,6 @@
 #define WORDCHARTS_WORDFREQUENCYANALYST_HPP
 
 #include <QAbstractItemModel>
-#include <QtConcurrentRun>
 
 #include "FileWordStream.hpp"
 #include "WordFileCountModel.hpp"
