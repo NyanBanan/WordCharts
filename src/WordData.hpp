@@ -14,6 +14,8 @@ struct WordData {
 
     bool operator ==(const WordData& right) const;
     bool operator < (const WordData& right) const;
+    bool operator > (const WordData& right) const;
+
 
     QString _word;
     QString _file;

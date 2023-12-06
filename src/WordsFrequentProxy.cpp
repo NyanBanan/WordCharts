@@ -4,26 +4,42 @@
 
 #include "WordsFrequentProxy.hpp"
 
-WordsFrequentProxy::WordsFrequentProxy(qint64 max_amount) : _max_amount(max_amount) {
-    _words_for_model.reserve(_max_amount);
-}
-
-void WordsFrequentProxy::updateData(const WordData &wd) {
-    auto iter = std::find(_words_for_model.begin(), _words_for_model.end(), wd);
-    if (iter != _words_for_model.end()) {
-        iter->_count = wd._count;
-        emit updateModelData(wd, wd);
-    } else if (_words_for_model.size() != _max_amount) {
-        _words_for_model.emplaceBack(wd);
-        emit newData(wd);
-        if (_words_for_model.size() == _max_amount - 1) {
-            _min_elem = std::min_element(_words_for_model.begin(), _words_for_model.end());
+WordsFrequentProxy::WordsFrequentProxy(const QString &filename, qint64 max_amount) : _max_amount(max_amount),
+                                                                                     _filename(filename) {}
+//Метод updateData увеличивает счетчик вхождения слова в документ и отправляет сигналы на изменение данных в модели
+void WordsFrequentProxy::updateData(const QString &word, quint64 count) {
+    WordData wd{word, _filename, count};
+    //Находим элемент с тем же словом и файлом в списке
+    qsizetype ind = _words_count.indexOf(wd);
+    if (ind != -1) {
+        //Если он найден увеличиваем его счетчик
+        _words_count[ind]._count += wd._count;
+        //Если он входить в топ _max_amount по частоте, то отправляем сигнал для обновления данных в модели
+        if (ind < _max_amount) {
+            emit updateModelData(_words_count[ind], _words_count[ind]);
         }
-    } else if (_min_elem->_count < wd._count) {
-        emit updateModelData(*_min_elem, wd);
-        _min_elem->_word = wd._word;
-        _min_elem->_count = wd._count;
-        _min_elem = std::min_element(_words_for_model.begin(), _words_for_model.end());
+    } else {
+        //Если не входит, добавляем его (алгоритмическая сложность QList::push_back O(1) если верить документации)
+        _words_count.push_back(wd);
+        ind = _words_count.size() - 1;
+        //Если прокси коллекция еще не содержит _max_amount элементов, мы отправляем сигнал об изменении данных в
+        //основной модели
+        if (_words_count.size() <= _max_amount) {
+            emit newData(wd);
+            //После заполнения коллекции на _max_amount элементов, сортируем коллекцию в порядке убывания
+            //Далее при выполнении аглоритма мы поддерживаем только первые _max_amount элементов отсортированными в порядке убывания
+            if (_words_count.size() == _max_amount) {
+                std::sort(_words_count.begin(), _words_count.end(), std::greater());
+            }
+        }
+    }
+    //Если не топовый элемент  встречается чаще, чем последний элемент из топовых, то
+    //он занимает место среди топовых и происходит сортировка первых _max_amount элементов
+    //_max_amount по популярности элемент занимает _max_amount-1 место в списке
+    //Также отправляется сигнал на изменение элемента в модели
+     if (ind > _max_amount-1 && _words_count[_max_amount - 1] < _words_count[ind]) {
+        emit updateModelData(_words_count[_max_amount - 1], _words_count[ind]);
+        _words_count.swapItemsAt(_max_amount - 1, ind);
+        std::sort(_words_count.begin(), _words_count.begin() += _max_amount, std::greater());
     }
 }
-

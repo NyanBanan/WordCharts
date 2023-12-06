@@ -10,7 +10,6 @@
 #include <QObject>
 #include <climits>
 #include <QHash>
-#include "../WordsCounter.hpp"
 
 struct Node {
     Node();
@@ -28,7 +27,6 @@ class ModifiedPrefixTree : public QObject{
 Q_OBJECT
 
 public:
-    ModifiedPrefixTree();
 
     Node* handelWord(const QString &word);
     void handleSubWord(const QString& sub_word);
@@ -37,8 +35,6 @@ public:
     void countChanged(QString word, quint64 count);
 private:
     Node root{};
-    qint64 _min_count{0};
-    WordsCounter _counter;
 };
 
 

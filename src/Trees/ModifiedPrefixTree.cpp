@@ -9,10 +9,6 @@ Node::Node(bool isEndOfWord) : _isEndOfWord(isEndOfWord) {
 
 Node::Node() : Node(false) {}
 
-ModifiedPrefixTree::ModifiedPrefixTree() {
-    connect(&_counter, &WordsCounter::countChanged, this, &ModifiedPrefixTree::countChanged);
-}
-
 Node *ModifiedPrefixTree::handelWord(const QString &word) {
     auto cur_node = &root;
     //Данная переменная нужна, в случае если во время прохода по ребрам появится новый минимальный элемент
@@ -34,13 +30,13 @@ Node *ModifiedPrefixTree::handelWord(const QString &word) {
         //Выполняя вставку нового слова, мы находу проверяем встречаются ли нам на пути ранее рассмотренные слова,
         // являющиеся подстрокой вставляемого слова и увеличиваем их счетчик вхождений
         if (cur_node->_isEndOfWord) {
-            _counter.increaseCount(word.left(ch_index), 1);
+            countChanged(word.left(ch_index), 1);
         }
     }
     //По окончании вставки последняя нода получает статус "Конец слова" и счетчику прибавляется 1
     if(!cur_node->_isEndOfWord) {
         cur_node->_isEndOfWord = true;
-        _counter.increaseCount(word, min_count_on_way);
+        countChanged(word, min_count_on_way);
     }
 
     QString sub_word{word.last(word.size() - 1)};
@@ -69,7 +65,7 @@ void ModifiedPrefixTree::handleSubWord(const QString &sub_word) {
         // являющиеся подстрокой вставляемого слова и увеличиваем их счетчик вхождений
         ++cur_node->_count;
         if (cur_node->_isEndOfWord) {
-            _counter.increaseCount(sub_word.left(ch_index), 1);
+            countChanged(sub_word.left(ch_index), 1);
         }
     }
 }

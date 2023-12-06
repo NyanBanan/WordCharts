@@ -17,9 +17,9 @@
 class WordsFrequentProxy : public QObject{
     Q_OBJECT
 public:
-    explicit WordsFrequentProxy(qint64 max_amount);
+    explicit WordsFrequentProxy(const QString &filename, qint64 max_amount);
 
-    void updateData(const WordData &wd);
+    void updateData(const QString &word, quint64 count);
 
 signals:
     void newData(WordData);
@@ -27,8 +27,8 @@ signals:
 
 private:
     qint64 _max_amount;
-    QList<WordData> _words_for_model{};
-    QList<WordData>::iterator _min_elem{};
+    QString _filename;
+    QList<WordData> _words_count{};
 };
 
 

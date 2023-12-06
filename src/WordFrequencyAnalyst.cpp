@@ -21,9 +21,14 @@ void WordFrequencyAnalyst::startParseDocument(QString file_path) {
         emit errorOccured("Модель не задана");
     }
     _model->resetData();
-    file_path.replace(QRegularExpression("^(file:[/]{2})"), "");
 
-    auto frequent_proxy = new WordsFrequentProxy(util::MAX_WORDS);
+    auto index = file_path.lastIndexOf("/");
+    auto short_filename = file_path;
+    if (index != -1) {
+        short_filename = file_path.mid(index + 1, short_filename.size() - index);
+    }
+
+    auto frequent_proxy = new WordsFrequentProxy(short_filename, util::MAX_WORDS);
     connect(frequent_proxy, &WordsFrequentProxy::newData, this, &WordFrequencyAnalyst::onNewData);
     connect(frequent_proxy, &WordsFrequentProxy::updateModelData, this, &WordFrequencyAnalyst::onUpdateData);
 
@@ -33,6 +38,8 @@ void WordFrequencyAnalyst::startParseDocument(QString file_path) {
     connect(_parse_thread, &QThread::finished, this, &WordFrequencyAnalyst::onThreadEnd);
     connect(_parse_thread, &WordFrequencyAnalystThread::progressChanged, this, &WordFrequencyAnalyst::progressChanged);
     connect(_parse_thread, &WordFrequencyAnalystThread::errorOccured, this, &WordFrequencyAnalyst::errorOccured);
+
+    file_path.replace(QRegularExpression("^(file:[/]{2})"), "");
 
     _parse_thread->parseFile(file_path);
     setCurrentState(WORK);

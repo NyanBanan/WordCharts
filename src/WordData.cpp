@@ -16,3 +16,7 @@ bool WordData::operator==(const WordData &right) const {
 bool WordData::operator<(const WordData &right) const {
     return _count < right._count;
 }
+
+bool WordData::operator>(const WordData &right) const {
+    return _count > right._count;
+}

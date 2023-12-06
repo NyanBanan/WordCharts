@@ -18,12 +18,6 @@ WordFrequencyAnalystThread::~WordFrequencyAnalystThread() {
 
 void WordFrequencyAnalystThread::parseFile(const QString &file_path) {
     _file_path = file_path;
-    auto index = file_path.lastIndexOf("/");
-    if (index != -1) {
-        _short_filename = file_path.mid(index + 1, _short_filename.size() - index);
-    } else {
-        _short_filename = file_path;
-    }
     start();
 }
 
@@ -48,7 +42,6 @@ void WordFrequencyAnalystThread::run() {
             increaseProgress(dirty_word.size());
 
             _word_stream.pushNextWord(dirty_word);
-            qDebug() << getProgress();
             while (_pause_required) {
                 QThread::msleep(100);
             }
@@ -94,7 +87,7 @@ void WordFrequencyAnalystThread::dropProgress()
 }
 
 void WordFrequencyAnalystThread::onCountChanged(const QString &word, quint64 count) {
-    _frequent_proxy->updateData({word, _short_filename, count});
+    _frequent_proxy->updateData(word, count);
 }
 
 
