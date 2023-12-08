@@ -17,6 +17,3 @@ QByteArray FileWordStream::getNextWord() {
 void FileWordStream::pushNextWord(QByteArray &to) {
     _text_stream >> to;
 }
-
-
-

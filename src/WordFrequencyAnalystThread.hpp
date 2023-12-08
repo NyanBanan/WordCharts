@@ -5,18 +5,17 @@
 #ifndef WORDCHARTS_WORDFREQUENCYANALYSTTHREAD_HPP
 #define WORDCHARTS_WORDFREQUENCYANALYSTTHREAD_HPP
 
-
 #include <QThread>
 
 #include "FileWordStream.hpp"
-#include "Trees/ModifiedPrefixTree.hpp"
-#include "WordsFrequentProxy.hpp"
+#include "count_classes/CountPrefixTree.hpp"
+#include "proxy_models/WordsFrequentProxy.hpp"
 #include "util/NumOfWordsConstant.hpp"
 
 class WordFrequencyAnalystThread: public QThread {
 Q_OBJECT
 public:
-    WordFrequencyAnalystThread(WordsFrequentProxy *frequent_proxy);
+    explicit WordFrequencyAnalystThread(proxy_models::WordsFrequentProxy *frequent_proxy);
     ~WordFrequencyAnalystThread() override;
 
     void parseFile(const QString& file_path);
@@ -32,6 +31,7 @@ signals:
     void errorOccured(QString error);
 public slots:
     void onCountChanged(const QString &word, quint64 count);
+    void onNewWord(const QString &word, quint64 count);
 
 protected:
     void run() override;
@@ -40,11 +40,12 @@ private:
     void increaseProgress(qint64 bytes_read);
     void dropProgress();
 
-    WordsFrequentProxy* _frequent_proxy{nullptr};
+    proxy_models::WordsFrequentProxy* _frequent_proxy{nullptr};
+    count_classes::CountPrefixTree _tree{};
     FileWordStream _word_stream{};
-    ModifiedPrefixTree _tree{};
 
     std::atomic<bool> _pause_required{false};
+    std::atomic<bool> _stop_required{false};
     qreal _progress{0.0};
     QString _file_path;
     QString _short_filename;

@@ -39,8 +39,6 @@ public:
 
     void updateData(const WordData &old_data, const WordData &new_data);
 
-    qsizetype getIndexOf(const QString &word, const QString &file);
-
     Q_INVOKABLE
     void resetData();
 private:

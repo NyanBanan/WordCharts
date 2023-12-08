@@ -4,10 +4,6 @@
 
 #include "WordFrequencyAnalyst.hpp"
 
-//void WordFrequencyAnalyst::setWordStream(FileWordStream *wordStream) {
-//    _word_stream = wordStream;
-//}
-
 void WordFrequencyAnalyst::setModel(WordFileCountModel *model) {
     _model = model;
 }
@@ -28,14 +24,14 @@ void WordFrequencyAnalyst::startParseDocument(QString file_path) {
         short_filename = file_path.mid(index + 1, short_filename.size() - index);
     }
 
-    auto frequent_proxy = new WordsFrequentProxy(short_filename, util::MAX_WORDS);
-    connect(frequent_proxy, &WordsFrequentProxy::newData, this, &WordFrequencyAnalyst::onNewData);
-    connect(frequent_proxy, &WordsFrequentProxy::updateModelData, this, &WordFrequencyAnalyst::onUpdateData);
+    auto frequent_proxy = new proxy_models::WordsFrequentProxy(short_filename, util::MAX_WORDS);
+    connect(frequent_proxy, &proxy_models::WordsFrequentProxy::newModelData, this, &WordFrequencyAnalyst::onNewData);
+    connect(frequent_proxy, &proxy_models::WordsFrequentProxy::updateModelData, this, &WordFrequencyAnalyst::onUpdateData);
 
     _parse_thread = new WordFrequencyAnalystThread(frequent_proxy);
 
-    connect(_parse_thread, &QThread::finished, _parse_thread, &QObject::deleteLater);
-    connect(_parse_thread, &QThread::finished, this, &WordFrequencyAnalyst::onThreadEnd);
+    connect(_parse_thread, &WordFrequencyAnalystThread::finished, _parse_thread, &QObject::deleteLater);
+    connect(_parse_thread, &WordFrequencyAnalystThread::finished, this, &WordFrequencyAnalyst::onThreadEnd);
     connect(_parse_thread, &WordFrequencyAnalystThread::progressChanged, this, &WordFrequencyAnalyst::progressChanged);
     connect(_parse_thread, &WordFrequencyAnalystThread::errorOccured, this, &WordFrequencyAnalyst::errorOccured);
 

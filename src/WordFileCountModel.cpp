@@ -1,8 +1,6 @@
-//
+// Created by nyanbanan on 02.12.23.
 
 #include "WordFileCountModel.hpp"
-
-// Created by nyanbanan on 02.12.23.
 
 WordFileCountModel::WordFileCountModel() {
     _words_data.reserve(util::MAX_WORDS);
@@ -14,7 +12,6 @@ int WordFileCountModel::rowCount(const QModelIndex &parent) const {
     return (int) _words_data.size();
 }
 
-//
 int WordFileCountModel::columnCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : 3;
 }
@@ -90,10 +87,6 @@ bool WordFileCountModel::hasIndex(int row, int column) const {
         return false;
     }
     return true;
-}
-
-qsizetype WordFileCountModel::getIndexOf(const QString &word, const QString &file) {
-    return _words_data.indexOf({word, file});
 }
 
 void WordFileCountModel::resetData() {

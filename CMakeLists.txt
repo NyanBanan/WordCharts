@@ -18,14 +18,14 @@ qt_add_qml_module(WordCharts
             src/main.qml
             src/WordsGraph.qml
         SOURCES
-            src/CountGraph.cpp
             src/FileWordStream.cpp
             src/WordFrequencyAnalystThread.cpp
-            src/WordsFrequentProxy.cpp
             src/WordFileCountModel.cpp
             src/WordFrequencyAnalyst.cpp
             src/WordData.cpp
-            src/Trees/ModifiedPrefixTree.cpp
+            src/proxy_models/WordsFrequentProxy.cpp
+            src/count_classes/CountClass.hpp
+            src/count_classes/CountPrefixTree.cpp
 )
 
 target_link_libraries(WordCharts PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::Qml)

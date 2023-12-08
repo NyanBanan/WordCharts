@@ -40,20 +40,16 @@ ApplicationWindow {
         }
 
         function onStateChanged(state){
-            console.log(state)
             switch (state){
                 case WordFrequencyAnalyst.WORK:{
-                    console.log(state)
                     grid.state = "WORKING"
                     break;
                 }
                 case WordFrequencyAnalyst.PAUSE:{
-                    console.log(state)
                     grid.state = "PAUSED"
                     break;
                 }
                 case WordFrequencyAnalyst.STOP:{
-                    console.log(state)
                     grid.state = "STOPPED"
                     break;
                 }

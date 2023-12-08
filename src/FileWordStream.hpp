@@ -13,10 +13,9 @@
 class FileWordStream : public WordStream {
 public:
     void setDevice(QIODevice *device);
-
     QByteArray getNextWord() override;
-
     void pushNextWord(QByteArray &to) override;
+
 private:
     QTextStream _text_stream;
 };

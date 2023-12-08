@@ -9,21 +9,21 @@
 
 #include "FileWordStream.hpp"
 #include "WordFileCountModel.hpp"
-#include "WordsFrequentProxy.hpp"
-#include "util/NumOfWordsConstant.hpp"
 #include "WordFrequencyAnalystThread.hpp"
+#include "proxy_models/WordsFrequentProxy.hpp"
+#include "util/NumOfWordsConstant.hpp"
 
 //WordFrequencyAnalyst обрабатывает указанный файл по словам в отдельном потоке, расчитывает прогресс обработки и
 //передает необходимые данные в модель посредством _frequent_proxy
 class WordFrequencyAnalyst : public QObject {
     Q_OBJECT
     QML_ELEMENT
-    Q_PROPERTY(WordFileCountModel *model READ getModel WRITE setModel)
+    Q_PROPERTY(WordFileCountModel* model READ getModel WRITE setModel)
     Q_PROPERTY(qreal progress READ getProgress NOTIFY progressChanged)
     Q_PROPERTY(State state READ getCurrentState WRITE setCurrentState NOTIFY stateChanged)
 
 public:
-    enum State{
+    enum State {
         WORK,
         PAUSE,
         STOP
@@ -33,11 +33,11 @@ public:
     Q_INVOKABLE
     void startParseDocument(QString file_path);
 
-    void setModel(WordFileCountModel *model);
+    void setModel(WordFileCountModel* model);
 
     void setCurrentState(WordFrequencyAnalyst::State currentState);
 
-    [[nodiscard]] WordFileCountModel *getModel() const;
+    [[nodiscard]] WordFileCountModel* getModel() const;
 
     [[nodiscard]] qreal getProgress();
 
@@ -49,17 +49,15 @@ signals:
     void errorOccured(QString error_message);
 
 private slots:
-    void onNewData(const WordData &wd);
-    void onUpdateData(const WordData &old_data, const WordData &new_data);
+    void onNewData(const WordData& wd);
+    void onUpdateData(const WordData& old_data, const WordData& new_data);
     void onThreadEnd();
 
 private:
     State _current_state{State::STOP};
-    FileWordStream _word_stream;
 
-    WordFrequencyAnalystThread* _parse_thread;
+    WordFrequencyAnalystThread* _parse_thread{nullptr};
     WordFileCountModel* _model{nullptr};
 };
 
-
-#endif //WORDCHARTS_WORDFREQUENCYANALYST_HPP
+#endif    //WORDCHARTS_WORDFREQUENCYANALYST_HPP
