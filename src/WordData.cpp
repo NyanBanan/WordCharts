@@ -6,9 +6,9 @@
 
 #include <utility>
 
-WordData::WordData(QString word, QString doc, quint32 count)
-    : _word(std::move(word)),
-      _file(std::move(doc)),
+WordData::WordData(const QString& word, const QString& doc, quint32 count)
+    : _word(word),
+      _file(doc),
       _count(count) {}
 
 bool WordData::operator== (const WordData& right) const {

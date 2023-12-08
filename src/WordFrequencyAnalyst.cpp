@@ -28,16 +28,24 @@ void WordFrequencyAnalyst::startParseDocument(QString file_path) {
     connect(frequent_proxy, &proxy_models::WordsFrequentProxy::newModelData, this, &WordFrequencyAnalyst::onNewData);
     connect(frequent_proxy, &proxy_models::WordsFrequentProxy::updateModelData, this, &WordFrequencyAnalyst::onUpdateData);
 
-    _parse_thread = new WordFrequencyAnalystThread(frequent_proxy);
-
-    connect(_parse_thread, &WordFrequencyAnalystThread::finished, _parse_thread, &QObject::deleteLater);
-    connect(_parse_thread, &WordFrequencyAnalystThread::finished, this, &WordFrequencyAnalyst::onThreadEnd);
-    connect(_parse_thread, &WordFrequencyAnalystThread::progressChanged, this, &WordFrequencyAnalyst::progressChanged);
-    connect(_parse_thread, &WordFrequencyAnalystThread::errorOccured, this, &WordFrequencyAnalyst::errorOccured);
-
     file_path.replace(QRegularExpression("^(file:[/]{2})"), "");
 
-    _parse_thread->parseFile(file_path);
+    _analyze_worker = new WordFrequencyAnalystWorker(file_path, frequent_proxy);
+    auto work_thread = new QThread;
+    frequent_proxy->moveToThread(work_thread);
+    _analyze_worker->moveToThread(work_thread);
+
+    connect(work_thread, &QThread::started, _analyze_worker, &WordFrequencyAnalystWorker::work);
+
+    connect(_analyze_worker, &WordFrequencyAnalystWorker::finished, work_thread, &QThread::quit);
+    connect(_analyze_worker, &WordFrequencyAnalystWorker::finished, _analyze_worker, &QObject::deleteLater);
+    connect(_analyze_worker, &WordFrequencyAnalystWorker::finished, frequent_proxy, &QObject::deleteLater);
+    connect(_analyze_worker, &WordFrequencyAnalystWorker::finished, this, &WordFrequencyAnalyst::onWorkEnd);
+
+    connect(_analyze_worker, &WordFrequencyAnalystWorker::progressChanged, this, &WordFrequencyAnalyst::progressChanged);
+    connect(_analyze_worker, &WordFrequencyAnalystWorker::errorOccured, this, &WordFrequencyAnalyst::errorOccured);
+
+    work_thread->start();
     setCurrentState(WORK);
 }
 
@@ -47,19 +55,19 @@ void WordFrequencyAnalyst::setCurrentState(WordFrequencyAnalyst::State currentSt
     switch (_current_state) {
         case WORK: {
             if (last_state == PAUSE) {
-                _parse_thread->unPause();
+                _analyze_worker->unPause();
             }
             break;
         }
         case PAUSE: {
             if (last_state != STOP) {
-                _parse_thread->pause();
+                _analyze_worker->pause();
             }
             break;
         }
         case STOP: {
             if (last_state == PAUSE) {
-                _parse_thread->stop();
+                _analyze_worker->stop();
             }
             break;
         }
@@ -79,7 +87,7 @@ void WordFrequencyAnalyst::onUpdateData(const WordData& old_data, const WordData
 
 qreal WordFrequencyAnalyst::getProgress() {
     if (_current_state != STOP) {
-        return _parse_thread->getProgress();
+        return _analyze_worker->getProgress();
     } else {
         return 0.0;
     }
@@ -89,6 +97,6 @@ WordFrequencyAnalyst::State WordFrequencyAnalyst::getCurrentState() const {
     return _current_state;
 }
 
-void WordFrequencyAnalyst::onThreadEnd() {
+void WordFrequencyAnalyst::onWorkEnd() {
     setCurrentState(STOP);
 }

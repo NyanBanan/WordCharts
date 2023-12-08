@@ -81,10 +81,6 @@ QModelIndex WordFileCountModel::index(int row, int column, const QModelIndex& pa
     return {};
 }
 
-QModelIndex WordFileCountModel::parent(const QModelIndex& child) const {
-    return {};
-}
-
 bool WordFileCountModel::hasIndex(int row, int column) const {
     if (column < 0 || column > columnCount(QModelIndex{}) || row < 0 || row > _words_data.count() - 1) {
         return false;
@@ -92,9 +88,12 @@ bool WordFileCountModel::hasIndex(int row, int column) const {
     return true;
 }
 
+QModelIndex WordFileCountModel::parent(const QModelIndex& child) const {
+    return {};
+}
+
 void WordFileCountModel::resetData() {
     beginResetModel();
     _words_data.clear();
-    _words_data.reserve(util::MAX_WORDS);
     endResetModel();
 }

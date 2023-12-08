@@ -8,7 +8,7 @@
 #include <QAbstractItemModel>
 
 #include "WordFileCountModel.hpp"
-#include "WordFrequencyAnalystThread.hpp"
+#include "WordFrequencyAnalystWorker.hpp"
 #include "proxy_models/WordsFrequentProxy.hpp"
 #include "util/NumOfWordsConstant.hpp"
 
@@ -50,12 +50,12 @@ signals:
 private slots:
     void onNewData(const WordData& wd);
     void onUpdateData(const WordData& old_data, const WordData& new_data);
-    void onThreadEnd();
+    void onWorkEnd();
 
 private:
     State _current_state{State::STOP};
 
-    WordFrequencyAnalystThread* _parse_thread{nullptr};
+    WordFrequencyAnalystWorker* _analyze_worker{nullptr};
     WordFileCountModel* _model{nullptr};
 };
 

@@ -2,41 +2,38 @@
 // Created by nyanbanan on 05.12.23.
 //
 
-#ifndef WORDCHARTS_WORDFREQUENCYANALYSTTHREAD_HPP
-#define WORDCHARTS_WORDFREQUENCYANALYSTTHREAD_HPP
+#ifndef WORDCHARTS_WORDFREQUENCYANALYSTWORKER_HPP
+#define WORDCHARTS_WORDFREQUENCYANALYSTWORKER_HPP
 
-#include <QThread>
+#include <QObject>
 
 #include "count_classes/CountPrefixTree.hpp"
 #include "proxy_models/WordsFrequentProxy.hpp"
 #include "src/word_streams/FileWordStream.hpp"
 #include "util/NumOfWordsConstant.hpp"
 
-class WordFrequencyAnalystThread : public QThread {
+class WordFrequencyAnalystWorker : public QObject {
     Q_OBJECT
 public:
-    explicit WordFrequencyAnalystThread(proxy_models::WordsFrequentProxy* frequent_proxy);
-    ~WordFrequencyAnalystThread() override;
-
-    void parseFile(const QString& file_path);
+    explicit WordFrequencyAnalystWorker(const QString& file_path, proxy_models::WordsFrequentProxy* frequent_proxy);
 
     void pause();
     void unPause();
-    void stop();
 
     [[nodiscard]] qreal getProgress();
 
 signals:
     void progressChanged(qreal progress);
     void errorOccured(QString error);
+    void finished();
 public slots:
     void onCountChanged(const QString& word, quint32 count);
     void onNewWord(const QString& word, quint32 count);
-
-protected:
-    void run() override;
+    void work();
+    void stop();
 
 private:
+    void completeProgress();
     void increaseProgress(qint64 bytes_read);
     void dropProgress();
 
@@ -56,4 +53,4 @@ private:
     qint64 _bytes_size{};
 };
 
-#endif    //WORDCHARTS_WORDFREQUENCYANALYSTTHREAD_HPP
+#endif    //WORDCHARTS_WORDFREQUENCYANALYSTWORKER_HPP

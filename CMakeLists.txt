@@ -18,7 +18,7 @@ qt_add_qml_module(WordCharts
             src/main.qml
             src/WordsGraph.qml
         SOURCES
-            src/WordFrequencyAnalystThread.cpp
+            src/WordFrequencyAnalystWorker.cpp
             src/WordFileCountModel.cpp
             src/WordFrequencyAnalyst.cpp
             src/WordData.cpp
