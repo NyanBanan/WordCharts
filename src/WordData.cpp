@@ -6,7 +6,7 @@
 
 #include <utility>
 
-WordData::WordData(QString word, QString doc, quint64 count)
+WordData::WordData(QString word, QString doc, quint32 count)
     : _word(std::move(word)),
       _file(std::move(doc)),
       _count(count) {}

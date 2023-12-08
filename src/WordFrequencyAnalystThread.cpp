@@ -38,7 +38,7 @@ void WordFrequencyAnalystThread::run() {
 
         while (dirty_word != "" && !_stop_required) {
             QString word{dirty_word};
-            word = word.toLower().replace(QRegularExpression(R"([.,"'()\[\]])"), "");
+            word = word.toLower().replace(QRegularExpression(R"([.,"'()\[\]!?])"), "");
             if (!word.isEmpty()) {
                 _tree.handleWord(word);
             }
@@ -55,7 +55,6 @@ void WordFrequencyAnalystThread::run() {
         qDebug() << "The time: " << elapsed_ms.count() << " ms\n";
     } else {
         emit errorOccured("Open device error");
-        exit(1);
     }
 }
 
@@ -89,10 +88,10 @@ void WordFrequencyAnalystThread::dropProgress() {
     progressChanged(_progress);
 }
 
-void WordFrequencyAnalystThread::onCountChanged(const QString& word, quint64 count) {
+void WordFrequencyAnalystThread::onCountChanged(const QString& word, quint32 count) {
     _frequent_proxy->updateData(word, count);
 }
 
-void WordFrequencyAnalystThread::onNewWord(const QString& word, quint64 count) {
+void WordFrequencyAnalystThread::onNewWord(const QString& word, quint32 count) {
     _frequent_proxy->newData(word, count);
 }

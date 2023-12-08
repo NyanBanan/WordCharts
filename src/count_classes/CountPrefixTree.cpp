@@ -16,7 +16,7 @@ namespace count_classes {
         auto cur_node = &_root;
         //Данная переменная нужна, в случае если во время прохода по ребрам появится новый минимальный элемент
         qsizetype ch_index{0};
-        quint64 min_count_on_way{std::numeric_limits<quint64>::max()};
+        quint32 min_count_on_way{std::numeric_limits<quint32>::max()};
         for (auto ch : word) {
             ++ch_index;
             auto next_node = cur_node->_childrens[ch];

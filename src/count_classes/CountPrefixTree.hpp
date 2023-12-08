@@ -18,7 +18,7 @@ namespace count_classes {
         ~PrefixTreeNode();
 
         bool _isEndOfWord{false};
-        qint64 _count{0};
+        quint32 _count{0};
         QMap<QChar, PrefixTreeNode*> _childrens{};
     };
 

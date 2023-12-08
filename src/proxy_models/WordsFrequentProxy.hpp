@@ -18,8 +18,8 @@ namespace proxy_models {
         Q_OBJECT
     public:
         explicit WordsFrequentProxy(const QString& filename, qint64 max_amount);
-        void newData(const QString& word, quint64 count);
-        void updateData(const QString& word, quint64 count);
+        void newData(const QString& word, quint32 count);
+        void updateData(const QString& word, quint32 count);
 
     signals:
         void newModelData(const WordData&);
@@ -29,7 +29,7 @@ namespace proxy_models {
         qint64 _max_amount;
         QString _filename;
         QList<WordData> _words_count{};
-        quint64 _min_count{};
+        quint32 _min_count{};
         qsizetype _min_count_pos{};
     };
 

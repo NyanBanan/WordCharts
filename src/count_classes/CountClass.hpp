@@ -14,8 +14,8 @@ namespace count_classes {
         virtual void handleWord(const QString& word) = 0;
 
     signals:
-        void newWord(const QString& word, quint64 count);
-        void countChanged(const QString& word, quint64 count);
+        void newWord(const QString& word, quint32 count);
+        void countChanged(const QString& word, quint32 count);
     };
 
 }

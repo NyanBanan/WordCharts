@@ -30,8 +30,8 @@ signals:
     void progressChanged(qreal progress);
     void errorOccured(QString error);
 public slots:
-    void onCountChanged(const QString& word, quint64 count);
-    void onNewWord(const QString& word, quint64 count);
+    void onCountChanged(const QString& word, quint32 count);
+    void onNewWord(const QString& word, quint32 count);
 
 protected:
     void run() override;

@@ -8,7 +8,7 @@
 #include <QString>
 
 struct WordData {
-    WordData(QString word, QString doc, quint64 count = 1);
+    WordData(QString word, QString doc, quint32 count = 1);
 
     bool operator== (const WordData& right) const;
     bool operator< (const WordData& right) const;
@@ -16,7 +16,7 @@ struct WordData {
 
     QString _word;
     QString _file;
-    quint64 _count;
+    quint32 _count;
 };
 
 #endif    //WORDCHARTS_WORDDATA_HPP

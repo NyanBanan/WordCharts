@@ -10,7 +10,7 @@ namespace proxy_models {
         : _max_amount(max_amount),
           _filename(filename) {}
 
-    void WordsFrequentProxy::newData(const QString& word, quint64 count) {
+    void WordsFrequentProxy::newData(const QString& word, quint32 count) {
         WordData wd{word, _filename, count};
         _words_count.push_back(wd);
         //Если прокси коллекция еще не содержит _max_amount элементов, мы отправляем сигнал об изменении данных в
@@ -29,9 +29,9 @@ namespace proxy_models {
     //Метод updateData увеличивает счетчик вхождения слова в документ и отправляет сигналы на изменение данных в модели
     //Элементы встречающиеся чаще всего в тексте - первые _max_amount элементов (топовые элементы)
     //Элемент среди первых _max_amount с самым малым значением _count - Самый редкий среди первых _max_amount элементов (редчайший топовый)
-    void WordsFrequentProxy::updateData(const QString& word, quint64 count) {
+    void WordsFrequentProxy::updateData(const QString& word, quint32 count) {
         WordData wd{word, _filename, count};
-        //Находим элемент с тем же словом и файлом в списке
+        //Находим элемент с тем же словом и файлом в списке (на случай непредвиденных ошибок, индекс проверяется на валидность)
         qsizetype ind = _words_count.indexOf(wd);
         if (ind != -1) {
             //Если он найден увеличиваем его счетчик
@@ -41,7 +41,7 @@ namespace proxy_models {
                 emit updateModelData(_words_count[ind], _words_count[ind]);
             }
             //Мы храним индекс и частоту появления самого редкого среди первых _max_amount элементов (редчайший топовый)
-            //Если встречается элемент не входящий в топовык и при этом встречающийся чаще чем редчайший топовый,
+            //Если встречается элемент не входящий в топовые и при этом встречающийся чаще чем редчайший топовый,
             //то мы отправляем сигнал основной модели, который заменяет редчайший топовый элемент на новый
             //после этого мы меняем местами эти элементы и находим новое самое редкое из первых _max_amount
             else if (_min_count < _words_count[ind]._count) {
