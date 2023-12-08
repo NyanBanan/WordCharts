@@ -23,29 +23,29 @@ public:
 
     WordFileCountModel();
 
-    [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex& parent) const override;
 
-    [[nodiscard]] int columnCount(const QModelIndex &parent) const override;
+    [[nodiscard]] int columnCount(const QModelIndex& parent) const override;
 
-    [[nodiscard]] QModelIndex parent(const QModelIndex &child) const override;
+    [[nodiscard]] QModelIndex parent(const QModelIndex& child) const override;
 
-    [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
+    [[nodiscard]] int rowCount(const QModelIndex& parent) const override;
 
-    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] QVariant data(const QModelIndex& index, int role) const override;
 
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-    void pushFront(const WordData &wd);
+    void pushFront(const WordData& wd);
 
-    void updateData(const WordData &old_data, const WordData &new_data);
+    void updateData(const WordData& old_data, const WordData& new_data);
 
     Q_INVOKABLE
     void resetData();
+
 private:
     [[nodiscard]] bool hasIndex(int row, int column) const;
 
     QList<WordData> _words_data;
 };
 
-
-#endif //WORDCHARTS_WORDFILECOUNTMODEL_HPP
+#endif    //WORDCHARTS_WORDFILECOUNTMODEL_HPP

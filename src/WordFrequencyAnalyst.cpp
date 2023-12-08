@@ -4,16 +4,16 @@
 
 #include "WordFrequencyAnalyst.hpp"
 
-void WordFrequencyAnalyst::setModel(WordFileCountModel *model) {
+void WordFrequencyAnalyst::setModel(WordFileCountModel* model) {
     _model = model;
 }
 
-WordFileCountModel *WordFrequencyAnalyst::getModel() const {
+WordFileCountModel* WordFrequencyAnalyst::getModel() const {
     return _model;
 }
 
 void WordFrequencyAnalyst::startParseDocument(QString file_path) {
-    if(_model == nullptr){
+    if (_model == nullptr) {
         emit errorOccured("Модель не задана");
     }
     _model->resetData();
@@ -69,11 +69,11 @@ void WordFrequencyAnalyst::setCurrentState(WordFrequencyAnalyst::State currentSt
     emit stateChanged(_current_state);
 }
 
-void WordFrequencyAnalyst::onNewData(const WordData &wd) {
+void WordFrequencyAnalyst::onNewData(const WordData& wd) {
     _model->pushFront(wd);
 }
 
-void WordFrequencyAnalyst::onUpdateData(const WordData &old_data, const WordData &new_data) {
+void WordFrequencyAnalyst::onUpdateData(const WordData& old_data, const WordData& new_data) {
     _model->updateData(old_data, new_data);
 }
 
@@ -92,4 +92,3 @@ WordFrequencyAnalyst::State WordFrequencyAnalyst::getCurrentState() const {
 void WordFrequencyAnalyst::onThreadEnd() {
     setCurrentState(STOP);
 }
-

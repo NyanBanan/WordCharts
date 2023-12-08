@@ -18,7 +18,6 @@ qt_add_qml_module(WordCharts
             src/main.qml
             src/WordsGraph.qml
         SOURCES
-            src/FileWordStream.cpp
             src/WordFrequencyAnalystThread.cpp
             src/WordFileCountModel.cpp
             src/WordFrequencyAnalyst.cpp
@@ -26,6 +25,8 @@ qt_add_qml_module(WordCharts
             src/proxy_models/WordsFrequentProxy.cpp
             src/count_classes/CountClass.hpp
             src/count_classes/CountPrefixTree.cpp
+            src/word_streams/WordStream.hpp
+            src/word_streams/FileWordStream.cpp
 )
 
 target_link_libraries(WordCharts PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::Qml)

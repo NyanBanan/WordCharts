@@ -7,7 +7,6 @@
 
 #include <QAbstractItemModel>
 
-#include "FileWordStream.hpp"
 #include "WordFileCountModel.hpp"
 #include "WordFrequencyAnalystThread.hpp"
 #include "proxy_models/WordsFrequentProxy.hpp"

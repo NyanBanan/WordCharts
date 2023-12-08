@@ -169,6 +169,7 @@ ApplicationWindow {
             }
         }
     }
+
     FileDialog {
         id: fileDialog
         currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)

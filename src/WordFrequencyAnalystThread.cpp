@@ -39,7 +39,7 @@ void WordFrequencyAnalystThread::run() {
         while (dirty_word != "" && !_stop_required) {
             QString word{dirty_word};
             word = word.toLower().replace(QRegularExpression(R"([.,"'()\[\]])"), "");
-            if(!word.isEmpty()) {
+            if (!word.isEmpty()) {
                 _tree.handleWord(word);
             }
             increaseProgress(dirty_word.size());
@@ -48,7 +48,7 @@ void WordFrequencyAnalystThread::run() {
             while (_pause_required && !_stop_required) {
                 QThread::msleep(100);
             }
-            QThread::msleep(10);
+            QThread::msleep(5);
         }
         auto end = std::chrono::steady_clock::now();
         auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);

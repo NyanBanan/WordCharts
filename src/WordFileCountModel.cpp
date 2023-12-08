@@ -6,19 +6,21 @@ WordFileCountModel::WordFileCountModel() {
     _words_data.reserve(util::MAX_WORDS);
 }
 
-int WordFileCountModel::rowCount(const QModelIndex &parent) const {
-    if (parent.isValid())
+int WordFileCountModel::rowCount(const QModelIndex& parent) const {
+    if (parent.isValid()) {
         return 0;
-    return (int) _words_data.size();
+    }
+    return (int)_words_data.size();
 }
 
-int WordFileCountModel::columnCount(const QModelIndex &parent) const {
+int WordFileCountModel::columnCount(const QModelIndex& parent) const {
     return parent.isValid() ? 0 : 3;
 }
 
-QVariant WordFileCountModel::data(const QModelIndex &index, int role) const {
-    if (!index.isValid())
+QVariant WordFileCountModel::data(const QModelIndex& index, int role) const {
+    if (!index.isValid()) {
         return {};
+    }
     switch (role) {
         case WordRole: {
             return QVariant::fromValue(_words_data[index.row()]._word);
@@ -44,14 +46,15 @@ QHash<int, QByteArray> WordFileCountModel::roleNames() const {
     return roles;
 }
 
-void WordFileCountModel::pushFront(const WordData &wd) {
-    beginInsertRows(QModelIndex{},  0, 0);
+void WordFileCountModel::pushFront(const WordData& wd) {
+    beginInsertRows(QModelIndex{}, 0, 0);
 
     _words_data.push_front(wd);
 
     endInsertRows();
 }
-void WordFileCountModel::updateData(const WordData &old_data, const WordData &new_data) {
+
+void WordFileCountModel::updateData(const WordData& old_data, const WordData& new_data) {
     auto ind = _words_data.indexOf(old_data);
     if (ind != -1) {
         _words_data[ind] = new_data;
@@ -59,7 +62,7 @@ void WordFileCountModel::updateData(const WordData &old_data, const WordData &ne
     dataChanged(createIndex(ind, 0), createIndex(ind, 0));
 }
 
-QModelIndex WordFileCountModel::index(int row, int column, const QModelIndex &parent) const {
+QModelIndex WordFileCountModel::index(int row, int column, const QModelIndex& parent) const {
     if (hasIndex(row, column)) {
         switch (column) {
             case 0: {
@@ -78,7 +81,7 @@ QModelIndex WordFileCountModel::index(int row, int column, const QModelIndex &pa
     return {};
 }
 
-QModelIndex WordFileCountModel::parent(const QModelIndex &child) const {
+QModelIndex WordFileCountModel::parent(const QModelIndex& child) const {
     return {};
 }
 

@@ -13,7 +13,6 @@ Item {
 
             ItemModelBarDataProxy {
                 id: proxy
-                itemModel: barModel
                 // Mapping model roles to bar series rows, columns, and values.
                 rowRole: "file"
                 columnRole: "word"
