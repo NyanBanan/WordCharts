@@ -29,7 +29,7 @@ namespace proxy_models {
     //Метод onUpdateData увеличивает счетчик вхождения слова в документ и отправляет сигналы на изменение данных в модели
     //Элементы встречающиеся чаще всего в тексте - первые _max_amount элементов (топовые элементы)
     //Элемент среди первых _max_amount с самым малым значением _count - Самый редкий среди первых _max_amount элементов (редчайший топовый)
-    void WordsFrequentProxy::onUpdateData(const QString& word, quint32 count) {
+    bool WordsFrequentProxy::onUpdateData(const QString& word, quint32 count) {
         WordData wd{word, _filename, count};
         //Находим элемент с тем же словом и файлом в списке (на случай непредвиденных ошибок, индекс проверяется на валидность)
         qsizetype ind = _words_count.indexOf(wd);
@@ -51,6 +51,8 @@ namespace proxy_models {
                 _min_count_pos = min_elem - _words_count.begin();
                 _min_count = min_elem->_count;
             }
+            return true;
         }
+        return false;
     }
 }    //namespace proxy_models
