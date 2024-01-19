@@ -7,7 +7,7 @@
 
 #include <QObject>
 
-#include "WordData.hpp"
+#include "src/WordData.hpp"
 
 namespace proxy_models {
     //Данный класс обрабатывает данные для модели и передает их посредством сигналов
