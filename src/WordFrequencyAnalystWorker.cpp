@@ -7,8 +7,8 @@
 WordFrequencyAnalystWorker::WordFrequencyAnalystWorker(const QString& file_path,
                                                        proxy_models::WordsFrequentProxy* frequent_proxy)
     : _frequent_proxy(frequent_proxy), _file_path(file_path) {
-    connect(&_tree, &count_classes::CountClass::countChanged, this, &WordFrequencyAnalystWorker::onCountChanged);
-    connect(&_tree, &count_classes::CountClass::newWord, this, &WordFrequencyAnalystWorker::onNewWord);
+    connect(&_tree, &count_classes::CountClass::countChanged, _frequent_proxy, &proxy_models::WordsFrequentProxy::onUpdateData);
+    connect(&_tree, &count_classes::CountClass::newWord, _frequent_proxy, &proxy_models::WordsFrequentProxy::onNewData);
 }
 
 void WordFrequencyAnalystWorker::work() {
@@ -83,12 +83,4 @@ void WordFrequencyAnalystWorker::unPause() {
 void WordFrequencyAnalystWorker::stop() {
     dropProgress();
     _stop_required = true;
-}
-
-void WordFrequencyAnalystWorker::onCountChanged(const QString& word, quint32 count) {
-    _frequent_proxy->updateData(word, count);
-}
-
-void WordFrequencyAnalystWorker::onNewWord(const QString& word, quint32 count) {
-    _frequent_proxy->newData(word, count);
 }

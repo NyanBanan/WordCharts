@@ -18,8 +18,9 @@ namespace proxy_models {
         Q_OBJECT
     public:
         explicit WordsFrequentProxy(const QString& filename, qint64 max_amount);
-        void newData(const QString& word, quint32 count);
-        void updateData(const QString& word, quint32 count);
+    public slots:
+        void onNewData(const QString& word, quint32 count);
+        void onUpdateData(const QString& word, quint32 count);
 
     signals:
         void newModelData(const WordData&);
