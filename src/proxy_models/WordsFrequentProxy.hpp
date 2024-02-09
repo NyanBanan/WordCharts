@@ -7,7 +7,7 @@
 
 #include <QObject>
 
-#include "WordData.hpp"
+#include "src/WordData.hpp"
 
 namespace proxy_models {
     //Данный класс обрабатывает данные для модели и передает их посредством сигналов
@@ -18,8 +18,9 @@ namespace proxy_models {
         Q_OBJECT
     public:
         explicit WordsFrequentProxy(const QString& filename, qint64 max_amount);
-        void newData(const QString& word, quint32 count);
-        void updateData(const QString& word, quint32 count);
+    public slots:
+        void onNewData(const QString& word, quint32 count);
+        bool onUpdateData(const QString& word, quint32 count);
 
     signals:
         void newModelData(const WordData&);
