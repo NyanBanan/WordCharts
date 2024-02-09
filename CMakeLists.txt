@@ -14,6 +14,7 @@ qt_add_executable(WordCharts src/main.cpp)
 
 qt_add_qml_module(WordCharts
         VERSION 6.2
+        RESOURCE_PREFIX /
         URI WordChartsQml
         QML_FILES
             src/main.qml
