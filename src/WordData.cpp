@@ -4,8 +4,6 @@
 
 #include "WordData.hpp"
 
-#include <utility>
-
 WordData::WordData(const QString& word, const QString& doc, quint32 count)
     : _word(word),
       _file(doc),

@@ -3,7 +3,8 @@ project(WordCharts)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_AUTOUIC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -28,6 +29,9 @@ qt_add_qml_module(WordCharts
             src/word_streams/WordStream.hpp
             src/word_streams/FileWordStream.cpp
 )
+
+include(src/word_streams/tests/TestFileWordStream.cmake)
+include(src/proxy_models/tests/TestWordsFrequentProxy.cmake)
 
 target_link_libraries(WordCharts PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::Qml)
 target_include_directories(WordCharts PUBLIC src)

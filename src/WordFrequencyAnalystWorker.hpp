@@ -27,8 +27,6 @@ signals:
     void errorOccured(QString error);
     void finished();
 public slots:
-    void onCountChanged(const QString& word, quint32 count);
-    void onNewWord(const QString& word, quint32 count);
     void work();
     void stop();
 
