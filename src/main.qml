@@ -2,8 +2,9 @@ import QtCore
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import QtDataVisualization
+
+import Qt.labs.platform
 
 import WordChartsQml
 
@@ -12,12 +13,6 @@ ApplicationWindow {
     visible: true
     minimumWidth: 300
     minimumHeight: 400
-    Component.onCompleted: {
-        root.width = Screen.desktopAvailableWidth / 4
-        root.height = Screen.desktopAvailableWidth / 4
-        root.x = Screen.desktopAvailableWidth / 2 - width / 2
-        root.y = Screen.desktopAvailableHeight / 2 - height / 2
-    }
 
     background: Rectangle {
         gradient: Gradient {
@@ -35,7 +30,7 @@ ApplicationWindow {
 
         function onErrorOccured(errorMessage) {
             console.log(errorMessage)
-            messageText.text = errorMessage
+            message.text = errorMessage
             message.open()
         }
 
@@ -160,7 +155,7 @@ ApplicationWindow {
                 Text {
                     id: filePath
                     anchors.fill: parent
-                    text: fileDialog.selectedFile == "" ? "Выберите файл" : fileDialog.currentFile
+                    text: "Выберите файл"
                     elide: Text.ElideLeft
                     wrapMode: Text.WrapAnywhere
                     horizontalAlignment: Text.AlignHCenter
@@ -172,29 +167,18 @@ ApplicationWindow {
 
     FileDialog {
         id: fileDialog
-        currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         nameFilters: ["Text files (*.txt)"]
+        onAccepted: filePath.text = currentFile //selectedFile doesnt exist in Qt.labs.platform
     }
 
     WordFileCountModel {
         id: barModel
     }
 
-    Dialog {
+    MessageDialog {
         id: message
-        width: parent.width / 2
-        height: parent.height / 2
-        anchors.centerIn: parent
-        modal: true
+        buttons: MessageDialog.Ok
+        modality: Qt.ApplicationModal
         title: qsTr("Error")
-        Text {
-            id: messageText
-            width: parent.width
-            height: parent.height
-            wrapMode: Text.Wrap
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
-        standardButtons: Dialog.Ok
     }
 }
